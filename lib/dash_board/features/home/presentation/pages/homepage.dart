@@ -105,23 +105,25 @@ class HomePage extends StatelessWidget {
 
               // Upcoming Event Section
 
-              StreamBuilder<EventModel>(
-                stream: _firebaseService.eventStream(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    debugPrint('Error: ${snapshot.error}');
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (snapshot.hasData) {
-                    debugPrint('Data: ${snapshot.data}');
-                    // debugPrint('Venue: ${snapshot.data?.foodFasting?.f1?.venue}');
-                    return EventCard(event: snapshot.data!);
-                  } else {
-                    return Center(child: Text('No Data Available'));
-                  }
-                },
-              ),
+              EventCard(),
+
+              // StreamBuilder<EventModel>(
+              //   stream: _firebaseService.eventStream(),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return Center(child: CircularProgressIndicator());
+              //     } else if (snapshot.hasError) {
+              //       debugPrint('Error: ${snapshot.error}');
+              //       return Center(child: Text('Error: ${snapshot.error}'));
+              //     } else if (snapshot.hasData) {
+              //       debugPrint('Data: ${snapshot.data}');
+              //       // debugPrint('Venue: ${snapshot.data?.foodFasting?.f1?.venue}');
+              //       return EventCard(event: snapshot.data!);
+              //     } else {
+              //       return Center(child: Text('No Data Available'));
+              //     }
+              //   },
+              // ),
               // Padding(
               //   padding: EdgeInsets.symmetric(horizontal: 16.w),
               //   child: Container(
