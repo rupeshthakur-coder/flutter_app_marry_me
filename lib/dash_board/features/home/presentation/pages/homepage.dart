@@ -4,10 +4,16 @@ import 'package:flutter_ui_marry/dash_board/core/colors/home_color.dart';
 import 'package:flutter_ui_marry/dash_board/core/utils/widgets/costum_appbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../model/event/event_model.dart';
+import '../../../service/firebase_service.dart';
+import '../../../widget/event_card.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
+    final FirebaseService _firebaseService = FirebaseService();
+
     return Scaffold(
         backgroundColor: homeColorConstant.FFFFFF,
         appBar: const PreferredSize(
@@ -72,14 +78,11 @@ class HomePage extends StatelessWidget {
                                 backgroundColor: const Color(0xFF9A2143),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(
-                                        12.r), // Top-left corner radius
-                                    bottomRight: Radius.circular(
-                                        12.r), // Bottom-right corner radius
+                                    topLeft: Radius.circular(12.r), // Top-left corner radius
+                                    bottomRight: Radius.circular(12.r), // Bottom-right corner radius
                                   ),
                                 ),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w, vertical: 8.h),
+                                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                               ),
                               child: Text(
                                 "Set up Profile",
@@ -101,113 +104,127 @@ class HomePage extends StatelessWidget {
               ),
 
               // Upcoming Event Section
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage(
-                          'assets/home/card_one.png'), // Path to your image
-                      fit: BoxFit
-                          .contain, // Adjust the image to cover the container
-                    ),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Upcoming",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF1E2742),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // Handle View All Tasks click
-                            },
-                            child: RichText(
-                              text: TextSpan(
-                                text: "View All Tasks",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: const Color(0xFF9A2143),
-                                  decoration: TextDecoration
-                                      .underline, // Add underline decoration
-                                  decorationColor: const Color(
-                                      0xFF9A2143), // Set the underline color
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "Food Tasting",
-                        style: GoogleFonts.dmSerifDisplay(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.normal,
-                          color: const Color(0xFF1E2742),
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        "12 June, Monday",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: const Color(0xFF1E2742),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "12:30 pm",
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: const Color(0xFF1E2742),
-                            ),
-                          ),
-                          Text(
-                            " F9 Caterers",
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: const Color(0xFF1E2742),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(
-                                    Icons.comment,
-                                    color: Colors.white,
-                                    size: 25.sp,
-                                  ),
-                                  12.horizontalSpace,
-                                  Icon(
-                                    Icons.notifications,
-                                    size: 25.sp,
-                                    color: Colors.white,
-                                  ),
-                                  12.horizontalSpace,
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+
+              StreamBuilder<EventModel>(
+                stream: _firebaseService.eventStream(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    debugPrint('Error: ${snapshot.error}');
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    debugPrint('Data: ${snapshot.data}');
+                    // debugPrint('Venue: ${snapshot.data?.foodFasting?.f1?.venue}');
+                    return EventCard(event: snapshot.data!);
+                  } else {
+                    return Center(child: Text('No Data Available'));
+                  }
+                },
               ),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+              //   child: Container(
+              //     padding: EdgeInsets.all(16.w),
+              //     decoration: BoxDecoration(
+              //       image: const DecorationImage(
+              //         image: AssetImage('assets/home/card_one.png'), // Path to your image
+              //         fit: BoxFit.contain, // Adjust the image to cover the container
+              //       ),
+              //       borderRadius: BorderRadius.circular(12.r),
+              //     ),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             Text(
+              //               "Upcoming",
+              //               style: TextStyle(
+              //                 fontSize: 12.sp,
+              //                 fontWeight: FontWeight.bold,
+              //                 color: const Color(0xFF1E2742),
+              //               ),
+              //             ),
+              //             TextButton(
+              //               onPressed: () {
+              //                 // Handle View All Tasks click
+              //               },
+              //               child: RichText(
+              //                 text: TextSpan(
+              //                   text: "View All Tasks",
+              //                   style: TextStyle(
+              //                     fontSize: 12.sp,
+              //                     color: const Color(0xFF9A2143),
+              //                     decoration: TextDecoration.underline, // Add underline decoration
+              //                     decorationColor: const Color(0xFF9A2143), // Set the underline color
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         Text(
+              //           "Food Tasting",
+              //           style: GoogleFonts.dmSerifDisplay(
+              //             fontSize: 20.sp,
+              //             fontWeight: FontWeight.normal,
+              //             color: const Color(0xFF1E2742),
+              //           ),
+              //         ),
+              //         SizedBox(height: 4.h),
+              //         Text(
+              //           "12 June, Monday",
+              //           style: TextStyle(
+              //             fontSize: 14.sp,
+              //             color: const Color(0xFF1E2742),
+              //           ),
+              //         ),
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             Text(
+              //               "12:30 pm",
+              //               style: TextStyle(
+              //                 fontSize: 14.sp,
+              //                 color: const Color(0xFF1E2742),
+              //               ),
+              //             ),
+              //             Text(
+              //               " F9 Caterers",
+              //               style: TextStyle(
+              //                 fontSize: 14.sp,
+              //                 color: const Color(0xFF1E2742),
+              //               ),
+              //             ),
+              //             Row(
+              //               children: [
+              //                 Row(
+              //                   mainAxisAlignment: MainAxisAlignment.end,
+              //                   children: [
+              //                     Icon(
+              //                       Icons.comment,
+              //                       color: Colors.white,
+              //                       size: 25.sp,
+              //                     ),
+              //                     12.horizontalSpace,
+              //                     Icon(
+              //                       Icons.notifications,
+              //                       size: 25.sp,
+              //                       color: Colors.white,
+              //                     ),
+              //                     12.horizontalSpace,
+              //                   ],
+              //                 ),
+              //               ],
+              //             ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 15.h),
 
               // Tasks Section
@@ -274,18 +291,10 @@ class HomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildVendorItem(
-                            image: 'assets/home/vender_one.png',
-                            title: 'Decor'),
-                        _buildVendorItem(
-                            image: 'assets/home/vender_two.png',
-                            title: 'Makeup'),
-                        _buildVendorItem(
-                            image: 'assets/home/vender_three.png',
-                            title: 'Caterer'),
-                        _buildVendorItem(
-                            image: 'assets/home/vender_four.png',
-                            title: 'Clothing'),
+                        _buildVendorItem(image: 'assets/home/vender_one.png', title: 'Decor'),
+                        _buildVendorItem(image: 'assets/home/vender_two.png', title: 'Makeup'),
+                        _buildVendorItem(image: 'assets/home/vender_three.png', title: 'Caterer'),
+                        _buildVendorItem(image: 'assets/home/vender_four.png', title: 'Clothing'),
                       ],
                     ),
                   ],
@@ -297,8 +306,7 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Stack(
-                  clipBehavior:
-                      Clip.none, // Allow the image to overflow the container
+                  clipBehavior: Clip.none, // Allow the image to overflow the container
                   children: [
                     Container(
                       padding: EdgeInsets.all(16.w),
@@ -309,9 +317,7 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                              height: 100
-                                  .h), // Adjust for text and button placement
+                          SizedBox(height: 100.h), // Adjust for text and button placement
                           Text(
                             "Are you tired?",
                             style: GoogleFonts.dmSerifDisplay(
@@ -337,14 +343,11 @@ class HomePage extends StatelessWidget {
                               backgroundColor: const Color(0xFF8B1C1C),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
-                                  topLeft:
-                                      Radius.circular(8.r), // Top left corner
-                                  bottomRight: Radius.circular(
-                                      8.r), // Bottom right corner
+                                  topLeft: Radius.circular(8.r), // Top left corner
+                                  bottomRight: Radius.circular(8.r), // Bottom right corner
                                 ),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w, vertical: 8.h),
+                              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                             ),
                             child: Text(
                               "Custom Package",
@@ -358,8 +361,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: -30
-                          .h, // Adjust this value to control how much the image overlaps the container
+                      top: -30.h, // Adjust this value to control how much the image overlaps the container
                       right: 0,
                       child: Image.asset(
                         'assets/home/vasket.png',
@@ -390,24 +392,20 @@ class HomePage extends StatelessWidget {
 
                     // Trending Images Row
                     SingleChildScrollView(
-                      scrollDirection:
-                          Axis.horizontal, // Enable horizontal scrolling
+                      scrollDirection: Axis.horizontal, // Enable horizontal scrolling
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.start, // Align items to the start
+                        mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
                         children: [
                           _buildTrendingItem(
                             image: 'assets/home/trend_one.png',
                             title: '#goldlehenga',
                           ),
-                          SizedBox(
-                              width: 4.w), // Space between items (optional)
+                          SizedBox(width: 4.w), // Space between items (optional)
                           _buildTrendingItem(
                             image: 'assets/home/trend_two.png',
                             title: '#tropicalflower',
                           ),
-                          SizedBox(
-                              width: 4.w), // Space between items (optional)
+                          SizedBox(width: 4.w), // Space between items (optional)
                           _buildTrendingItem(
                             image: 'assets/home/trend_one.png',
                             title: '#pastelcolors',

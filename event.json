@@ -1,0 +1,10 @@
+{
+  "events": {
+    "foodTasting": {
+      "title": "Food Tasting",
+      "date": "12 June, Monday",
+      "time": "12:30 pm",
+      "venue": "F9 Caterers"
+    }
+  }
+}
