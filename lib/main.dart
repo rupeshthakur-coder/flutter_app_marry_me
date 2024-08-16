@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_ui_marry/dash_board/features/auth/google_auth/sign_in_page.dart';
-
+import 'package:flutter_ui_marry/dash_board/features/home/presentation/pages/homepage.dart';
 import 'package:flutter_ui_marry/dash_board/features/user_data/presentation/page/onbaring_screen.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
@@ -61,19 +60,5 @@ class MyApp extends StatelessWidget {
     // For example, check shared preferences or a Firestore flag
     // Returning false for now as an example
     return false;
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home Page"),
-      ),
-      body: Center(
-        child: Text("Welcome to the Home Page!"),
-      ),
-    );
   }
 }
