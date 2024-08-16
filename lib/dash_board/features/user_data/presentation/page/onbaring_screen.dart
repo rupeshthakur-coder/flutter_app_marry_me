@@ -10,7 +10,7 @@ class OnboardingFlow extends StatefulWidget {
 }
 
 class _OnboardingFlowState extends State<OnboardingFlow> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 duration: Duration(milliseconds: 300), curve: Curves.ease);
           }),
           OnboardingPage4(onFinish: () {
-            // Navigate to home or any other screen after submission
-            Navigator.popUntil(context, ModalRoute.withName('/home'));
+            // Navigate to the home page when the onboarding process is complete
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/home',
+              (Route<dynamic> route) => false,
+            );
           }),
         ],
       ),
