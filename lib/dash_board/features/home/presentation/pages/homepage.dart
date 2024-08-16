@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_ui_marry/dash_board/core/colors/home_color.dart';
 import 'package:flutter_ui_marry/dash_board/core/utils/widgets/costum_appbar.dart';
+import 'package:flutter_ui_marry/dash_board/features/widget/Tasks_card.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../model/event/event_model.dart';
-import '../../../service/firebase_service.dart';
 import '../../../widget/event_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    final FirebaseService _firebaseService = FirebaseService();
-
     return Scaffold(
         backgroundColor: homeColorConstant.FFFFFF,
         appBar: const PreferredSize(
@@ -78,11 +74,14 @@ class HomePage extends StatelessWidget {
                                 backgroundColor: const Color(0xFF9A2143),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(12.r), // Top-left corner radius
-                                    bottomRight: Radius.circular(12.r), // Bottom-right corner radius
+                                    topLeft: Radius.circular(
+                                        12.r), // Top-left corner radius
+                                    bottomRight: Radius.circular(
+                                        12.r), // Bottom-right corner radius
                                   ),
                                 ),
-                                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w, vertical: 8.h),
                               ),
                               child: Text(
                                 "Set up Profile",
@@ -106,6 +105,12 @@ class HomePage extends StatelessWidget {
               // Upcoming Event Section
 
               EventCard(),
+
+              SizedBox(height: 15.h),
+
+              // Tasks Section
+              TasksCard(),
+              SizedBox(height: 20.h),
 
               // StreamBuilder<EventModel>(
               //   stream: _firebaseService.eventStream(),
@@ -227,54 +232,6 @@ class HomePage extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              SizedBox(height: 15.h),
-
-              // Tasks Section
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Tasks",
-                      style: GoogleFonts.dmSerifDisplay(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.normal,
-                        color: const Color(0xFF1E2742),
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _buildTaskItem(
-                            image: 'assets/home/task_one.png',
-                            title: 'Food Menu',
-                            status: 'Pending',
-                            statusColor: const Color(0xFFFE7A15),
-                          ),
-                          SizedBox(width: 16.w),
-                          _buildTaskItem(
-                            image: 'assets/home/task_two.png',
-                            title: 'Guest List',
-                            status: 'Completed',
-                            statusColor: const Color(0xFF008000),
-                          ),
-                          SizedBox(width: 16.w),
-                          _buildTaskItem(
-                            image: 'assets/home/task_three.png',
-                            title: 'Vendors',
-                            status: 'Pending',
-                            statusColor: const Color(0xFFFE7A15),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 20.h),
 
               // Vendors Section
               Padding(
@@ -293,10 +250,18 @@ class HomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildVendorItem(image: 'assets/home/vender_one.png', title: 'Decor'),
-                        _buildVendorItem(image: 'assets/home/vender_two.png', title: 'Makeup'),
-                        _buildVendorItem(image: 'assets/home/vender_three.png', title: 'Caterer'),
-                        _buildVendorItem(image: 'assets/home/vender_four.png', title: 'Clothing'),
+                        _buildVendorItem(
+                            image: 'assets/home/vender_one.png',
+                            title: 'Decor'),
+                        _buildVendorItem(
+                            image: 'assets/home/vender_two.png',
+                            title: 'Makeup'),
+                        _buildVendorItem(
+                            image: 'assets/home/vender_three.png',
+                            title: 'Caterer'),
+                        _buildVendorItem(
+                            image: 'assets/home/vender_four.png',
+                            title: 'Clothing'),
                       ],
                     ),
                   ],
@@ -308,7 +273,8 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Stack(
-                  clipBehavior: Clip.none, // Allow the image to overflow the container
+                  clipBehavior:
+                      Clip.none, // Allow the image to overflow the container
                   children: [
                     Container(
                       padding: EdgeInsets.all(16.w),
@@ -319,7 +285,9 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 100.h), // Adjust for text and button placement
+                          SizedBox(
+                              height: 100
+                                  .h), // Adjust for text and button placement
                           Text(
                             "Are you tired?",
                             style: GoogleFonts.dmSerifDisplay(
@@ -345,11 +313,14 @@ class HomePage extends StatelessWidget {
                               backgroundColor: const Color(0xFF8B1C1C),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8.r), // Top left corner
-                                  bottomRight: Radius.circular(8.r), // Bottom right corner
+                                  topLeft:
+                                      Radius.circular(8.r), // Top left corner
+                                  bottomRight: Radius.circular(
+                                      8.r), // Bottom right corner
                                 ),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 8.h),
                             ),
                             child: Text(
                               "Custom Package",
@@ -363,7 +334,8 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: -30.h, // Adjust this value to control how much the image overlaps the container
+                      top: -30
+                          .h, // Adjust this value to control how much the image overlaps the container
                       right: 0,
                       child: Image.asset(
                         'assets/home/vasket.png',
@@ -394,20 +366,24 @@ class HomePage extends StatelessWidget {
 
                     // Trending Images Row
                     SingleChildScrollView(
-                      scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                      scrollDirection:
+                          Axis.horizontal, // Enable horizontal scrolling
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
+                        mainAxisAlignment:
+                            MainAxisAlignment.start, // Align items to the start
                         children: [
                           _buildTrendingItem(
                             image: 'assets/home/trend_one.png',
                             title: '#goldlehenga',
                           ),
-                          SizedBox(width: 4.w), // Space between items (optional)
+                          SizedBox(
+                              width: 4.w), // Space between items (optional)
                           _buildTrendingItem(
                             image: 'assets/home/trend_two.png',
                             title: '#tropicalflower',
                           ),
-                          SizedBox(width: 4.w), // Space between items (optional)
+                          SizedBox(
+                              width: 4.w), // Space between items (optional)
                           _buildTrendingItem(
                             image: 'assets/home/trend_one.png',
                             title: '#pastelcolors',
@@ -481,64 +457,6 @@ class HomePage extends StatelessWidget {
   }
 
 // Build Task Item Widget
-  Widget _buildTaskItem({
-    required String image,
-    required String title,
-    required String status,
-    required Color statusColor,
-  }) {
-    // Determine the icon to display based on the status
-    IconData statusIcon;
-    switch (status) {
-      case 'Pending':
-        statusIcon = Icons.pending; // Icon for pending tasks
-        break;
-      case 'Completed':
-        statusIcon = Icons.check_circle; // Icon for completed tasks
-        break;
-      case 'In Progress':
-        statusIcon = Icons.hourglass_empty; // Icon for tasks in progress
-        break;
-      case 'Cancelled':
-        statusIcon = Icons.cancel; // Icon for cancelled tasks
-        break;
-      default:
-        statusIcon = Icons.info; // Default icon for unknown status
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Image.asset(image, width: 128.w, height: 128.h),
-        // SizedBox(height: 8.h),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1E2742),
-          ),
-        ),
-        SizedBox(height: 4.h),
-        Row(
-          children: [
-            Icon(
-              statusIcon,
-              color: statusColor,
-            ),
-            SizedBox(width: 4.w),
-            Text(
-              status,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: statusColor,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
 
   // Build Vendor Item Widget
   Widget _buildVendorItem({required String image, required String title}) {

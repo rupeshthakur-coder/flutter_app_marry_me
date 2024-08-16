@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_marry/dash_board/features/home/presentation/pages/homepage.dart';
+import 'package:flutter_ui_marry/dash_board/features/user_data/presentation/page/onbaring_screen.dart';
 
 import 'auth_service.dart';
 
@@ -15,7 +15,7 @@ class _SignInPageState extends State<SignInPage> {
     try {
       await _authService.signInWithGoogle();
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => OnboardingFlow()),
       );
     } catch (e) {
       _showErrorDialog('Sign in failed: $e');
